@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block main_content %}
+<div style="margin-top: 120px;"></div>
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">О нашем <span>Ресторане</span></h2>
+            <span class="section-subtitle">Познакомьтесь ближе</span>
+        </div>
+        
+        <div class="about">
+            <div class="about__image">
+                {% if our_history.image %}
+                    <img src="{{ our_history.image.url }}" alt="Uluk-Ata">
+                {% endif %}
+            </div>
+            <div class="about__content">
+                <h3>{{ our_history.title }}</h3>
+                <div class="about__divider"></div>
+                <p style="font-size: 1.1rem; line-height: 1.8;">{{ our_history.description }}</p>
+                <p style="margin-top: 20px;">Здесь вы можете добавить дополнительную историю о поваре, философии кухни и наших ценностях.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if chefs %}
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наша <span>Команда</span></h2>
+            <span class="section-subtitle">Познакомьтесь с мастерами</span>
+        </div>
+        <div class="chefs-grid">
+            {% for chef in chefs %}
+            <div class="chef-card" data-animate>
+                <div class="chef-card__image">
+                    <img src="{{ chef.image.url }}" alt="{{ chef.name }}">
+                </div>
+                <div class="chef-card__content">
+                    <h3 class="chef-card__name">{{ chef.name }}</h3>
+                    <p class="chef-card__title">{{ chef.title }}</p>
+                    <p class="chef-card__desc">{{ chef.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

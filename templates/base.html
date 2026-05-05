@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Uluk-Ata Restaurant{% endblock %}</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="/" class="logo">
+                    {% if site_settings.logo %}
+                    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}">
+                    {% else %}
+                    Uluk-Ata<span> Restaurant</span>
+                    {% endif %}
+                </a>
+
+                <nav class="nav">
+                    <ul class="nav__list">
+                        <li><a href="{% url 'index' %}" class="nav__link">Главная</a></li>
+                        <li><a href="{% url 'menu' %}" class="nav__link">Меню</a></li>
+                        <li><a href="{% url 'gallery' %}" class="nav__link">Галерея</a></li>
+                        <li><a href="{% url 'contacts' %}" class="nav__link">Контакты</a></li>
+                    </ul>
+                    <a href="{% url 'reservation' %}" class="nav__btn">Забронировать</a>
+                </nav>
+
+                <button class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__info">
+                    <div class="footer__logo">Uluk-Ata<span> Restaurant</span></div>
+                    <p class="footer__desc">Традиционное гостеприимство и изысканная кухня.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer__links-group">
+                    <h4 class="footer__title">Навигация</h4>
+                    <ul class="footer__links">
+                        <li><a href="{% url 'index' %}">Главная</a></li>
+                        <li><a href="{% url 'menu' %}">Меню</a></li>
+                        <li><a href="{% url 'reservation' %}">Бронирование</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 Uluk-Ata Restaurant. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block main_content %}
+    <div style="margin-top: 100px;"></div>
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Бронирование</h2>
+                    <span class="section-subtitle">Забронируйте стол</span>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-info" data-animate>
+                        <h3>Искусство гостеприимства</h3>
+                        <div class="contact-info-card">
+                            <p>В Uluk‑Ata мы стремимся обеспечить каждому гостю исключительный сервис. Предварительное бронирование гарантирует вам лучший столик и позволяет нам подготовиться к вашему визиту.</p>
+                            
+                            <div class="info-item">
+                                <div class="info-icon"><i class="fa-solid fa-phone-volume"></i></div>
+                                <div class="info-content">
+                                    <h4>Телефон для связи</h4>
+                                    <p>{{ site_settings.phone_number }}</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+                                <div class="info-content">
+                                    <h4>Часы работы</h4>
+                                    <p>{{ site_settings.working_hours|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-container" data-animate>
+                        <div class="form-header">
+                            <h3>Ваш визит</h3>
+                            <p>Заполните детали, и мы подготовим всё к вашему приходу</p>
+                        </div>
+                        <form id="reservationForm" class="reservation-form" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Ваше имя *" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" name="phone" id="resPhone" placeholder="Номер телефона *" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" name="date" id="datePicker" placeholder="Выберите дату *" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="time" id="timePicker" placeholder="Выберите время *" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <select name="guests" required>
+                                        <option value="" disabled selected>Количество гостей *</option>
+                                        <option value="1">1 гость</option>
+                                        <option value="2">2 гостя</option>
+                                        <option value="3">3 гостя</option>
+                                        <option value="4">4 гостя</option>
+                                        <option value="5">5 гостей</option>
+                                        <option value="6">6 гостей</option>
+                                        <option value="7">7 гостей</option>
+                                        <option value="8">8+ (уточните в комментарии)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="occasion">
+                                        <option value="" disabled selected>Повод (необязательно)</option>
+                                        <option value="birthday">День рождения</option>
+                                        <option value="anniversary">Годовщина</option>
+                                        <option value="business">Деловая встреча</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="comment" rows="3" placeholder="Особые пожелания"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Забронировать стол</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr("#datePicker", {
+            locale: "ru",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disableMobile: "true"
+        });
+
+        flatpickr("#timePicker", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true,
+            locale: "ru",
+            disableMobile: "true"
+        });
+    });
+</script>
+{% endblock %}

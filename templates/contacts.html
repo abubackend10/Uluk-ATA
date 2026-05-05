@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block main_content %}
+    <div style="margin-top: 100px;"></div>
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Контакты</h2>
+                    <span class="section-subtitle">Свяжитесь с нами</span>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>Наши контакты</h3>
+                        <div class="about__divider"></div>
+                        <div class="contact-info-card" data-animate>
+                            <div class="info-item">
+                                <div class="info-icon"><i class="fas fa-map-pin"></i></div>
+                                <div class="info-content">
+                                    <h4>Наш адрес</h4>
+                                    <p>{{ site_settings.address }}</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon"><i class="fas fa-phone"></i></div>
+                                <div class="info-content">
+                                    <h4>Телефоны</h4>
+                                    <p>{{ site_settings.phone_number }}</p>
+                                    {% if site_settings.delivery_phone %}
+                                    <p>Доставка: {{ site_settings.delivery_phone }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="info-content">
+                                    <h4>Электронная почта</h4>
+                                    <p>{{ site_settings.email }}</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon"><i class="fas fa-clock"></i></div>
+                                <div class="info-content">
+                                    <h4>График работы</h4>
+                                    <p>{{ site_settings.working_hours }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="map-container" data-animate>
+                            <iframe src="{{ site_settings.map_link }}" width="100%" height="300" style="border:0; display: block;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                    <div class="contact-form-container" data-animate>
+                        <div class="form-header">
+                            <h3>Отправьте нам сообщение</h3>
+                            <p>Мы ответим вам в течение 15 минут</p>
+                        </div>
+                        <div class="about__divider" style="margin: 0 auto 35px;"></div>
+                        <form id="contactForm" class="contact-form" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Ваше имя" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" name="phone" placeholder="Телефон">
+                            </div>
+                            <div class="form-group">
+                                <textarea name="message" rows="5" placeholder="Ваше сообщение" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Отправить сообщение</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block main_content %}
+<div style="margin-top: 120px;"></div>
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Галерея</h2>
+            <span class="section-subtitle">Атмосфера нашего ресторана</span>
+        </div>
+
+        <div class="gallery-grid">
+            {% for item in gallery_items %}
+            <div class="gallery-item" data-animate>
+                <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">{{ item.title }}</h3>
+                    <p class="gallery-description">{{ item.description|truncatewords:15 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

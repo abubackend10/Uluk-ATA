@@ -1,0 +1,370 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uluk-Ata | Ресторан традиционной кухни</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=27.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="{% url 'index' %}" class="logo">
+                    {% if site_settings.logo %}
+                        <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.title }}">
+                    {% else %}
+                        {{ site_settings.title|default:"Uluk-Ata" }}
+                    {% endif %}
+                </a>
+                <button class="menu-toggle" aria-label="Меню">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="nav">
+                    <ul class="nav__list">
+                        <li><a href="{% url 'index' %}" class="nav__link">Главная</a></li>
+                        <li><a href="{% url 'menu' %}" class="nav__link">Меню</a></li>
+                        <li><a href="{% url 'gallery' %}" class="nav__link">Галерея</a></li>
+                        <li><a href="{% url 'contacts' %}" class="nav__link">Контакты</a></li>
+                    </ul>
+                    <a href="{% url 'reservation' %}" class="btn btn-gold nav__btn">Забронировать</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {% if messages %}
+        <div class="container" style="margin-top: 120px; margin-bottom: -80px; position: relative; z-index: 100;">
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% block main_content %}
+        <!-- Hero Section -->
+        {% if site_settings.hero_image %}
+        <section class="hero" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('{{ site_settings.hero_image.url }}');">
+        {% else %}
+        <section class="hero">
+        {% endif %}
+            <div class="hero__content">
+                <h1 class="hero__title">{{ site_settings.title|default:"Uluk-Ata" }}</h1>
+                <p class="hero__subtitle">Добро пожаловать в</p>
+                <p class="hero__desc">{{ site_settings.description|default:"Изысканные блюда традиционной кухни в атмосфере восточного гостеприимства"|linebreaksbr }}</p>
+                <div class="hero__buttons">
+                    <a href="{% url 'reservation' %}" class="btn btn-secondary">Забронировать стол</a>
+                    <a href="{% url 'menu' %}" class="btn btn-primary">Посмотреть меню</a>
+                </div>
+            </div>
+            <div class="hero__scroll">
+                <span>Прокрутите вниз</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- About Section (переработан) -->
+        <section class="section section--cream">
+            <div class="container">
+                {% if our_history %}
+                <div class="about">
+                    <div class="about__content" data-animate>
+                        <div class="about__header">
+                            <span class="section-subtitle">Наша история</span>
+                            <h3>{{ our_history.title | default:"История Uluk-Ata" }}</h3>
+                        </div>
+                        <div class="about__divider"></div>
+                        <div class="about__text">
+                            <p>{{ our_history.description }}</p>
+                        </div>
+                        <div class="about__features">
+                            {% for feature in our_history.features.all %}
+                            <div class="feature-item" data-animate>
+                                <div class="feature-icon"><i class="{{ feature.icon }}"></i></div>
+                                <div class="feature-text">
+                                    <h4>{{ feature.title }}</h4>
+                                    <p>{{ feature.description }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="about__image" data-animate>
+                        <div class="about__img-wrapper">
+                            {% if our_history.image %}
+                                <img src="{{ our_history.image.url }}" alt="{{ our_history.title }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        <!-- News Section -->
+
+        <!-- Popular Dishes Section -->
+        {% if popular_dishes %}
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Популярные <span>блюда</span></h2>
+                    <span class="section-subtitle">Наши хиты</span>
+                </div>
+                <div class="menu-grid">
+                    {% for dish in popular_dishes %}
+                        <article class="dish-card" data-animate>
+                            <div class="dish-card__image">
+                                <img src="{{ dish.image.url }}" alt="{{ dish.title }}">
+                                <div class="dish-card__badges">
+                                    {% if dish.is_promo_active %}
+                                        <span class="dish-card__badge dish-card__badge--promo">Акция</span>
+                                    {% endif %}
+                                    {% if dish.is_new_active %}
+                                        <span class="dish-card__badge dish-card__badge--new">Новинка</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="dish-card__content">
+                                <h3 class="dish-card__title">{{ dish.title }}</h3>
+                                <p class="dish-card__desc">{{ dish.description }}</p>
+                                <div class="dish-card__footer">
+                                    <div class="dish-card__info">
+                                        {% if dish.is_promo_active %}
+                                            <div class="dish-card__price-wrapper">
+                                                <span class="dish-card__price dish-card__price--old">{{ dish.price }} сом</span>
+                                                <span class="dish-card__price dish-card__price--new">{{ dish.discount_price }} сом</span>
+                                            </div>
+                                        {% else %}
+                                            <div class="dish-card__price-wrapper">
+                                                <span class="dish-card__price">{{ dish.price }} сом</span>
+                                            </div>
+                                        {% endif %}
+                                        <span class="dish-card__category">{{ dish.category.name }}</span>
+                                    </div>
+                                    <div class="cart-control-wrapper" 
+                                         data-dish-id="{{ dish.id }}" 
+                                         data-dish-title="{{ dish.title|escapejs }}" 
+                                         data-dish-price="{{ dish.get_display_price }}"
+                                         data-dish-old-price="{{ dish.price }}">
+                                        <!-- Будет заполнено через JS (cart.updateUI) -->
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="{% url 'menu' %}" class="btn btn-primary">Все блюда</a>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+
+        <!-- News Section -->
+        {% if news_list %}
+        <section class="section section--cream">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Новости и акции</h2>
+                    <span class="section-subtitle">Будьте в курсе</span>
+                </div>
+                <div class="news-grid">
+                    {% for news in news_list %}
+                    <article class="news-card" data-animate 
+                             data-full-title="{{ news.title }}" 
+                             data-full-desc="{{ news.description }}" 
+                             data-full-img="{{ news.image.url }}"
+                             {% if news.promotion_end_date %}data-promo-end="{{ news.promotion_end_date|date:'d.m.Y' }}"{% endif %}>
+                        <div class="news-card__image">
+                            {% if news.image %}<img src="{{ news.image.url }}" alt="{{ news.title }}">{% endif %}
+                        </div>
+                        <div class="news-card__content">
+                            <h3 class="news-card__title">{{ news.title }}</h3>
+                            <p class="news-card__desc">{{ news.description }}</p>
+                            {% if news.promotion_end_date %}
+                                <div class="news-card__promo-info">
+                                    <i class="fas fa-clock"></i> Акция до: {{ news.promotion_end_date|date:"d.m.Y" }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="{% url 'news_list' %}" class="btn btn-secondary">Все новости</a>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Statistics Section (Статический блок) -->
+        <section class="stats section">
+            <div class="container">
+                <div class="stats-grid">
+                    {% for stat in statistics %}
+                    <div class="stat-item" data-animate>
+                        <i class="{{ stat.icon }} stat-icon"></i>
+                        <div class="stat-value" data-target-value="{{ stat.value }}">0</div>
+                        <div class="stat-label">{{ stat.title }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section (Статический блок) -->
+        <section class="section section--cream">
+            <div class="container">
+                <div class="section-header" data-animate>
+                    <h2 class="section-title">Отзывы <span>гостей</span></h2>
+                    <span class="section-subtitle">Что о нас говорят</span>
+                </div>
+                <div class="testimonials-grid">
+                    {% for testimonial in testimonials %}
+                    <div class="testimonial-card" data-animate>
+                        <div class="testimonial-rating">
+                            {% for i in "12345" %}
+                                <i class="{% if forloop.counter <= testimonial.rating %}fas{% else %}far{% endif %} fa-star"></i>
+                            {% endfor %}
+                        </div>
+                        <p class="testimonial-text">"{{ testimonial.text }}"</p>
+                        <div class="testimonial-user">
+                            <img src="https://ui-avatars.com/api/?name={{ testimonial.name }}&background=b85c4b&color=fff" alt="{{ testimonial.name }}">
+                            <div class="testimonial-user-info">
+                                <h4>{{ testimonial.name }}</h4>
+                                <span>{{ testimonial.created_at|date:"d.m.Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__info">
+                    <div class="footer__logo">{{ site_settings.title|default:"Uluk-Ata" }}</div>
+                    <p class="footer__desc">{{ site_settings.description }}</p>
+                    <div class="social-links">
+                        <a href="{{ site_settings.instagram }}" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="{{ site_settings.facebook }}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="{{ site_settings.tikTok }}" class="social-link"><i class="fab fa-tiktok"></i></a>
+                        {% if site_settings.whatsapp %}
+                        <a href="https://wa.me/{{ site_settings.whatsapp }}" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="footer__nav">
+                    <h4 class="footer__title">Навигация</h4>
+                    <ul class="footer__links">
+                        <li><a href="{% url 'index' %}">Главная</a></li>
+                        <li><a href="{% url 'gallery' %}">Галерея</a></li>
+                        <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                        <li><a href="{% url 'reservation' %}">Бронирование</a></li>
+                    </ul>
+                </div>
+                <div class="footer__hours">
+                    <h4 class="footer__title">Часы работы</h4>
+                    <p>{{ site_settings.working_hours }}</p>
+                </div>
+                <div class="footer__contact">
+                    <h4 class="footer__title">Контакты</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> {{ site_settings.address }}</li>
+                        <li><i class="fas fa-phone-alt"></i> {{ site_settings.phone_number }}</li>
+                        {% if site_settings.delivery_phone %}
+                        <li><i class="fas fa-truck"></i> Доставка: {{ site_settings.delivery_phone }}</li>
+                        {% endif %}
+                        <li><i class="fas fa-envelope"></i> {{ site_settings.email }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© 2025 {{ site_settings.title|default:"Uluk-Ata" }}. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal__overlay" onclick="cart.toggle()"></div>
+        <div class="cart-modal__container">
+            <div class="cart-modal__header">
+                <h3>Ваш заказ</h3>
+                <button class="cart-modal__close" onclick="cart.toggle()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-modal__body">
+                <div class="cart-modal__body-header" id="cartClearHeader" style="display: none;">
+                    <button class="cart-modal__clear" onclick="cart.clear()">Очистить всё</button>
+                </div>
+                <div id="cartItems">
+                    <div class="cart-empty-msg">Ваша корзина пуста</div>
+                </div>
+            </div>
+            <div class="cart-modal__footer">
+                <div class="cart-total">
+                    <span>Итого:</span>
+                    <div class="cart-total__price-wrap"><span id="cartTotalValue">0</span> сом</div>
+                </div>
+                <button class="btn btn-primary btn-block" id="whatsappOrderBtn" onclick="cart.sendOrder('{{ site_settings.whatsapp }}')">
+                    <i class="fab fa-whatsapp"></i> Заказать через WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Cart Button -->
+    <button class="cart-floating-btn" id="cartToggleBtn" onclick="cart.toggle()">
+        <i class="fas fa-shopping-basket"></i>
+        <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+
+    <!-- Floating Feedback Button -->
+    <a href="{% url 'reviews' %}" class="feedback-pulse" aria-label="Оставить отзыв">
+        <i class="fas fa-star"></i>
+    </a>
+
+    <!-- News Modal (Expanded Card) -->
+    <div class="news-modal" id="newsModal">
+        <div class="news-modal__overlay"></div>
+        <div class="news-modal__container">
+            <button class="news-modal__close"><i class="fas fa-times"></i></button>
+            <div class="news-modal__body">
+                <div class="news-modal__image"><img src="" alt=""></div>
+                <div class="news-modal__content">
+                    <h2 class="news-modal__title"></h2>
+                    <div class="news-modal__promo"></div>
+                    <p class="news-modal__desc"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        function orderViaWhatsApp(dishTitle, price, whatsappNumber) {
+            const message = `Здравствуйте! Хочу заказать блюдо: ${dishTitle} - ${price} сом`;
+            const encodedMessage = encodeURIComponent(message);
+            const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            window.open(url, '_blank');
+        }
+    </script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

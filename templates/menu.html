@@ -1,0 +1,74 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block main_content %}
+<section class="section" style="padding-top: 140px; min-height: 60vh;">
+    <div class="container">
+        <div class="section-header">
+            
+            <h2 class="section-title">Наше меню</h2>
+            <span class="section-subtitle">Откройте для себя наши вкусы</span>
+        </div>
+
+        <div class="menu-filter-wrapper" style="text-align: center; margin-bottom: 50px;">
+            <div class="menu-filter">
+                <span class="menu-filter__active-marker"></span>
+                <a href="{% url 'menu' %}" class="filter-button{% if active_category == 'all' %} active{% endif %}">Все</a>
+                {% for category in categories %}
+                    <a href="{% url 'menu' %}?category={{ category.slug }}" class="filter-button{% if active_category == category.slug %} active{% endif %}">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="menu-container">
+            {% if dishes.exists %}
+                <div class="menu-grid">
+                    {% for dish in dishes %}
+                        <article class="dish-card">
+                            <div class="dish-card__image">
+                                <img src="{{ dish.image.url }}" alt="{{ dish.title }}">
+                                <div class="dish-card__badges">
+                                    {% if dish.is_promo_active %}
+                                        <span class="dish-card__badge dish-card__badge--promo">Акция</span>
+                                    {% endif %}
+                                    {% if dish.is_new_active %}
+                                        <span class="dish-card__badge dish-card__badge--new">Новинка</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="dish-card__content">
+                                <h3 class="dish-card__title">{{ dish.title }}</h3>
+                                <p class="dish-card__desc">{{ dish.description }}</p>
+                                <div class="dish-card__footer">
+                                    <div class="dish-card__info">
+                                        {% if dish.is_promo_active %}
+                                            <div class="dish-card__price-wrapper">
+                                                <span class="dish-card__price dish-card__price--old">{{ dish.price }} сом</span>
+                                                <span class="dish-card__price dish-card__price--new">{{ dish.discount_price }} сом</span>
+                                            </div>
+                                        {% else %}
+                                            <div class="dish-card__price-wrapper">
+                                                <span class="dish-card__price">{{ dish.price }} сом</span>
+                                            </div>
+                                        {% endif %}
+                                        <span class="dish-card__category">{{ dish.category.name }}</span>
+                                    </div>
+                                    <div class="cart-control-wrapper" 
+                                         data-dish-id="{{ dish.id }}" 
+                                         data-dish-title="{{ dish.title|escapejs }}" 
+                                         data-dish-price="{{ dish.get_display_price }}"
+                                         data-dish-old-price="{{ dish.price }}">
+                                        <!-- Заполняется динамически через JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="menu-empty">В этой категории блюд пока нет. Выберите другую категорию или нажмите «Все».</div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
