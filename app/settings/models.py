@@ -7,6 +7,7 @@ class Settings(models.Model):
     title = models.CharField(max_length=250, verbose_name='Название сайта')
     description = models.TextField(max_length=500, verbose_name='Описание сайта')
     logo = models.ImageField(upload_to='settings/', verbose_name='Логотип сайта', blank=True, null=True)
+    favicon = models.ImageField(upload_to='settings/', verbose_name='Фавикон (иконка сайта)', blank=True, null=True, help_text="Изображение для иконки сайта (например, .ico, .png). Рекомендуется 32x32 или 64x64 пикселя.")
     hero_image = models.ImageField(upload_to='settings/', verbose_name='Фон главного экрана', blank=True, null=True)
     facebook = models.URLField(max_length=250, verbose_name='Ссылка на Facebook')
     instagram = models.URLField(max_length=250, verbose_name='Ссылка на Instagram')

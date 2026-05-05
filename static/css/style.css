@@ -1905,10 +1905,11 @@ footer.footer { overflow: hidden; } /* Защита от лишних зазор
     /* Скрываем текст на мобильном оверлее */
     .gallery-title, .gallery-description {
         display: none !important;
+        }
     }
-}
-    width: 100%;
-    max-height: 65vh;
+    .lightbox-content {
+        width: 100%;
+        max-height: 65vh;
     background: #000;
     overflow: hidden;
 }
