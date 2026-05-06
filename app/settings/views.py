@@ -136,7 +136,7 @@ def reservation(request):
             except Exception as e:
                 print(f"Ошибка отправки email: {e}")
                 
-        messages.success(request, 'Ваш столик успешно забронирован! Мы ждем вас.')
+        messages.success(request, 'Ваша заявка принята! Мы свяжемся с вами в ближайшее время для подтверждения бронирования.')
         return redirect('reservation')
         
     return render(request, 'reservation.html')

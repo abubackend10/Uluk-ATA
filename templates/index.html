@@ -235,13 +235,24 @@
                 </div>
                 <div class="testimonials-grid">
                     {% for testimonial in testimonials %}
-                    <div class="testimonial-card" data-animate>
+                    <div class="testimonial-card {% if testimonial.text|length > 180 %}testimonial-card--expandable{% endif %}" 
+                         data-animate
+                         {% if testimonial.text|length > 180 %}
+                         data-full-text="{{ testimonial.text|escapejs }}"
+                         data-name="{{ testimonial.name|escapejs }}"
+                         data-date="{{ testimonial.created_at|date:'d.m.Y' }}"
+                         data-rating="{{ testimonial.rating }}"
+                         data-avatar="https://ui-avatars.com/api/?name={{ testimonial.name|urlencode }}&background=b85c4b&color=fff"
+                         {% endif %}>
                         <div class="testimonial-rating">
                             {% for i in "12345" %}
                                 <i class="{% if forloop.counter <= testimonial.rating %}fas{% else %}far{% endif %} fa-star"></i>
                             {% endfor %}
                         </div>
                         <p class="testimonial-text">"{{ testimonial.text }}"</p>
+                        {% if testimonial.text|length > 180 %}
+                        <div class="testimonial-more">Читать полностью...</div>
+                        {% endif %}
                         <div class="testimonial-user">
                             <img src="https://ui-avatars.com/api/?name={{ testimonial.name }}&background=b85c4b&color=fff" alt="{{ testimonial.name }}">
                             <div class="testimonial-user-info">
@@ -353,6 +364,25 @@
                     <h2 class="news-modal__title"></h2>
                     <div class="news-modal__promo"></div>
                     <p class="news-modal__desc"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonial Modal -->
+    <div class="testimonial-modal" id="testimonialModal">
+        <div class="testimonial-modal__overlay"></div>
+        <div class="testimonial-modal__container">
+            <button class="testimonial-modal__close"><i class="fas fa-times"></i></button>
+            <div class="testimonial-modal__body">
+                <div class="testimonial-modal__rating"></div>
+                <p class="testimonial-modal__text"></p>
+                <div class="testimonial-modal__user">
+                    <img src="" alt="" class="testimonial-modal__avatar">
+                    <div class="testimonial-modal__info">
+                        <h4 class="testimonial-modal__name"></h4>
+                        <span class="testimonial-modal__date"></span>
+                    </div>
                 </div>
             </div>
         </div>

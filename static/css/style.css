@@ -1190,6 +1190,7 @@ footer.footer { overflow: hidden; } /* Защита от лишних зазор
     position: relative;
     transition: var(--transition);
     border: 1px solid rgba(184, 92, 75, 0.05);
+    min-width: 0; /* Позволяем карточке сжиматься */
 }
 .testimonial-card:hover {
     transform: translateY(-10px);
@@ -1207,7 +1208,19 @@ footer.footer { overflow: hidden; } /* Защита от лишних зазор
     color: rgba(212, 163, 115, 0.1);
 }
 .testimonial-rating { color: #ffc107; margin-bottom: 15px; font-size: 0.9rem; }
-.testimonial-text { color: var(--text-light); font-style: italic; margin-bottom: 25px; line-height: 1.8; }
+.testimonial-text { 
+    color: var(--text-light); 
+    font-style: italic; 
+    margin-bottom: 15px; 
+    line-height: 1.8;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word; /* Более агрессивный перенос слов */
+}
 .testimonial-user { display: flex; align-items: center; gap: 15px; }
 .testimonial-user img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary-color); }
 .testimonial-user-info h4 { font-size: 1.2rem; color: var(--primary-dark); margin-bottom: 2px; }
@@ -1305,9 +1318,10 @@ footer.footer { overflow: hidden; } /* Защита от лишних зазор
 
     /* Стилизация карточек отзывов для мобильных */
     .testimonial-card {
-        padding: 20px;
+        padding: 15px;
         display: flex;
         flex-direction: column;
+        min-width: 0; /* Убеждаемся, что карточка может сжиматься на мобильных */
     }
     .testimonial-card::before {
         font-size: 2rem;
@@ -1317,12 +1331,8 @@ footer.footer { overflow: hidden; } /* Защита от лишних зазор
     .testimonial-text {
         font-size: 0.8rem;
         line-height: 1.5;
-        margin-bottom: 15px;
-        /* Ограничиваем текст, чтобы карточки были примерно одной высоты */
-        display: -webkit-box;
+        margin-bottom: 10px;
         -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
     }
     .testimonial-user img {
         width: 45px;
@@ -1907,89 +1917,73 @@ footer.footer { overflow: hidden; } /* Защита от лишних зазор
         display: none !important;
         }
     }
-    .lightbox-content {
-        width: 100%;
-        max-height: 65vh;
-    background: #000;
-    overflow: hidden;
-}
-.lightbox-content img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-.lightbox-footer {
-    padding: 30px 40px;
-    background: var(--white);
-    text-align: left;
-    overflow-y: auto;
-}
-.lightbox-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
-    color: var(--primary-dark);
-    margin-bottom: 8px;
-}
-.lightbox-desc {
-    color: var(--text-light);
-    font-size: 1.15rem; /* Увеличено для лучшей читаемости */
-    line-height: 1.6;
-}
-.lightbox-close {
-    position: absolute;
-    top: 45px; /* Опустили ниже, чтобы не скрывался за краем экрана */
-    right: 20px;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
+
+/* ===== TESTIMONIAL MODAL ===== */
+.testimonial-card--expandable {
     cursor: pointer;
-    z-index: 10;
-    display: flex;
+    transition: var(--transition);
+}
+.testimonial-card--expandable:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-5px);
+}
+.testimonial-more {
+    margin-top: -5px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.testimonial-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: none;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    padding: 20px;
 }
-.lightbox-prev, .lightbox-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: white; font-size: 50px; cursor: pointer; transition: var(--transition);
-    background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
-    width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;
-    border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
-    z-index: 5;
+.testimonial-modal.active { display: flex; }
+.testimonial-modal__overlay { position: absolute; inset: 0; background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(10px); }
+.testimonial-modal__container {
+    position: relative; background: var(--white); width: 100%; max-width: 600px;
+    max-height: 90vh; /* Увеличена максимальная высота для большего контента */
+    border-radius: var(--border-radius); z-index: 1;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.4); transform: scale(0.9); opacity: 0; transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
 }
-.lightbox-prev:hover, .lightbox-next:hover { background: var(--primary-color); transform: translateY(-50%) scale(1.1); }
-.lightbox-prev { left: 30px; }
-.lightbox-next { right: 30px; }
-
-/* ===== CONTACT PAGE ===== */
-.contact-grid { 
-    display: grid; 
-    grid-template-columns: 0.9fr 1.1fr; 
-    gap: 50px; 
-    margin-bottom: 80px;
-    align-items: start;
+.testimonial-modal.active .testimonial-modal__container { transform: scale(1); opacity: 1; }
+.testimonial-modal__close {
+    position: absolute; top: 20px; right: 20px; background: none; border: none;
+    font-size: 1.5rem; cursor: pointer; color: var(--text-light);
 }
-
-.contact-info h3 {
-    font-size: 2.5rem;
-    color: var(--primary-dark);
-    margin-bottom: 30px;
-    font-weight: 700;
+.testimonial-modal__text { 
+    font-size: 1.1rem; 
+    font-style: italic; 
+    color: var(--text-dark); 
+    margin-bottom: 30px; 
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word; /* Более агрессивный перенос слов для модального окна */
+    min-width: 0; /* Позволяем тексту сжиматься внутри модального окна */
 }
-
-/* Стили для контейнера формы бронирования */
-.reservation-form-card {
-    background: var(--white);
-    padding: 50px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-lg);
-    border: 1px solid rgba(184, 92, 75, 0.05);
+.testimonial-modal__rating { color: #ffc107; margin-bottom: 20px; font-size: 1.2rem; }
+.testimonial-modal__user { display: flex; align-items: center; gap: 15px; }
+.testimonial-modal__avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--secondary-color); }
+.testimonial-modal__name { font-size: 1.3rem; color: var(--primary-dark); margin: 0; }
+.testimonial-modal__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+.testimonial-modal__date { font-size: 0.8rem; color: var(--text-light); } /* Меньшая дата */
+.testimonial-modal__body {
+    padding: 40px;
+    overflow-y: auto;
 }
 
 .contact-info-card {

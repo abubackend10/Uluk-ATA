@@ -64,6 +64,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // ===== AUTO-HIDE MESSAGES (Django Alerts) =====
+    const alerts = document.querySelectorAll('.alert');
+    if (alerts.length) {
+        setTimeout(() => {
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-20px)';
+            });
+            setTimeout(() => {
+                const container = document.querySelector('.messages-container');
+                if (container && container.parentElement) container.parentElement.remove();
+            }, 500);
+        }, 5000);
+    }
 
     // ===== GALLERY LIGHTBOX =====
     const galleryItems = document.querySelectorAll('.gallery-item');
@@ -174,6 +189,51 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.addEventListener('click', closeModal);
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
+        });
+    }
+
+    // ===== TESTIMONIAL MODAL LOGIC =====
+    const testimonialCards = document.querySelectorAll('.testimonial-card--expandable');
+    const testimonialModal = document.getElementById('testimonialModal');
+    
+    if (testimonialCards.length && testimonialModal) {
+        const modalText = testimonialModal.querySelector('.testimonial-modal__text');
+        const modalName = testimonialModal.querySelector('.testimonial-modal__name');
+        const modalDate = testimonialModal.querySelector('.testimonial-modal__date');
+        const modalRating = testimonialModal.querySelector('.testimonial-modal__rating');
+        const modalAvatar = testimonialModal.querySelector('.testimonial-modal__avatar');
+        const closeBtn = testimonialModal.querySelector('.testimonial-modal__close');
+        const overlay = testimonialModal.querySelector('.testimonial-modal__overlay');
+
+        testimonialCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const data = card.dataset;
+                modalText.textContent = `"${data.fullText}"`;
+                modalName.textContent = data.name;
+                modalDate.textContent = data.date;
+                modalAvatar.src = data.avatar;
+                
+                let starsHTML = '';
+                const rating = parseInt(data.rating);
+                for (let i = 1; i <= 5; i++) {
+                    starsHTML += `<i class="${i <= rating ? 'fas' : 'far'} fa-star"></i> `;
+                }
+                modalRating.innerHTML = starsHTML;
+                
+                testimonialModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        const closeModal = () => {
+            testimonialModal.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && testimonialModal.classList.contains('active')) closeModal();
         });
     }
 
