@@ -18,6 +18,7 @@ ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,7 +27,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app.settings.apps.SettingsConfig',
     'cloudinary',
-    'cloudinary_storage',
 ]
 
 
@@ -107,9 +107,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
-# # ✅ MEDIA
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR / 'media'
+# ✅ MEDIA (Удаляем MEDIA_ROOT, так как Render не хранит файлы)
+MEDIA_URL = '/media/'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
