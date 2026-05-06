@@ -107,9 +107,9 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
-# ✅ MEDIA
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# # ✅ MEDIA
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
@@ -118,3 +118,4 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+print("CLOUD:", os.getenv('CLOUD_NAME'))
