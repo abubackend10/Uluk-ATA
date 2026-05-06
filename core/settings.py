@@ -107,14 +107,12 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
-# ✅ MEDIA (Удаляем MEDIA_ROOT, так как Render не хранит файлы)
+# ✅ MEDIA
 MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
     'API_KEY': os.getenv('API_KEY'),
     'API_SECRET': os.getenv('API_SECRET'),
 }
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-print("CLOUD:", os.getenv('CLOUD_NAME'))
