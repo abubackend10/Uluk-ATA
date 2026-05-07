@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-{% load static %}
+{% load static cloudinary_extras %}
 
 {% block main_content %}
 <div style="margin-top: 120px;"></div>
@@ -13,7 +13,7 @@
         <div class="about">
             <div class="about__image">
                 {% if our_history.image %}
-                    <img src="{{ our_history.image.url }}" alt="Uluk-Ata">
+                    <img src="{{ our_history.image.url|optimize_image:'w_800' }}" alt="Uluk-Ata" loading="lazy" decoding="async">
                 {% endif %}
             </div>
             <div class="about__content">
@@ -37,7 +37,7 @@
             {% for chef in chefs %}
             <div class="chef-card" data-animate>
                 <div class="chef-card__image">
-                    <img src="{{ chef.image.url }}" alt="{{ chef.name }}">
+                    <img src="{{ chef.image.url|optimize_image:'w_400' }}" alt="{{ chef.name }}" loading="lazy" decoding="async">
                 </div>
                 <div class="chef-card__content">
                     <h3 class="chef-card__name">{{ chef.name }}</h3>

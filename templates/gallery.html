@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-{% load static %}
+{% load static cloudinary_extras %}
 
 {% block main_content %}
 <div style="margin-top: 120px;"></div>
@@ -13,7 +13,7 @@
         <div class="gallery-grid">
             {% for item in gallery_items %}
             <div class="gallery-item" data-animate>
-                <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                <img src="{{ item.image.url|optimize_image:'w_800' }}" alt="{{ item.title }}" loading="lazy" decoding="async">
                 <div class="gallery-overlay">
                     <h3 class="gallery-title">{{ item.title }}</h3>
                     <p class="gallery-description">{{ item.description|truncatewords:15 }}</p>

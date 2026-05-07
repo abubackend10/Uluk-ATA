@@ -1,4 +1,4 @@
-{% load static %}
+{% load static cloudinary_extras %}
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Uluk-Ata Restaurant{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- Font Awesome -->
@@ -19,7 +23,7 @@
             <div class="header__inner">
                 <a href="/" class="logo">
                     {% if site_settings.logo %}
-                    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}">
+                    <img src="{{ site_settings.logo.url|optimize_image:'w_400' }}" alt="{{ site_settings.site_name }}" loading="lazy" decoding="async">
                     {% else %}
                     Uluk-Ata<span> Restaurant</span>
                     {% endif %}
@@ -78,7 +82,7 @@
     </footer>
 
     <!-- JS -->
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/script.js' %}" defer></script>
 </body>
 
 </html>

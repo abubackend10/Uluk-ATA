@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-{% load static %}
+{% load static cloudinary_extras %}
 
 {% block main_content %}
 <div style="margin-top: 120px;"></div>
@@ -15,10 +15,10 @@
             <article class="news-card" data-animate
                      data-full-title="{{ news.title }}" 
                      data-full-desc="{{ news.description }}" 
-                     data-full-img="{{ news.image.url }}"
+                     data-full-img="{{ news.image.url|optimize_image:'w_1200' }}"
                      {% if news.promotion_end_date %}data-promo-end="{{ news.promotion_end_date|date:'d.m.Y' }}"{% endif %}>
                 <div class="news-card__image">
-                    <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                    <img src="{{ news.image.url|optimize_image:'w_600' }}" alt="{{ news.title }}" loading="lazy" decoding="async">
                 </div>
                 <div class="news-card__content">
                     <h3 class="news-card__title">{{ news.title }}</h3>

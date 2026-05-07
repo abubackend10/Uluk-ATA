@@ -1,4 +1,4 @@
-{% load static %}
+{% load static cloudinary_extras %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,6 +10,13 @@
     {% else %}
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     {% endif %}
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    {% if site_settings.hero_image %}
+    <link rel="preload" as="image" href="{{ site_settings.hero_image.url|optimize_image:'w_1920' }}" fetchpriority="high">
+    {% endif %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=27.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -20,7 +27,7 @@
             <div class="header__inner">
                 <a href="{% url 'index' %}" class="logo">
                     {% if site_settings.logo %}
-                        <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.title }}">
+                        <img src="{{ site_settings.logo.url|optimize_image:'w_400' }}" alt="{{ site_settings.title }}" loading="lazy" decoding="async">
                     {% else %}
                         {{ site_settings.title|default:"Uluk-Ata" }}
                     {% endif %}
@@ -56,7 +63,7 @@
 
         {% block main_content %}
         {% if site_settings.hero_image %}
-        <section class="hero" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('{{ site_settings.hero_image.url }}');">
+        <section class="hero" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('{{ site_settings.hero_image.url|optimize_image:"w_1920" }}');">
         {% else %}
         <section class="hero">
         {% endif %}
@@ -103,7 +110,7 @@
                     <div class="about__image" data-animate>
                         <div class="about__img-wrapper">
                             {% if our_history.image %}
-                                <img src="{{ our_history.image.url }}" alt="{{ our_history.title }}" loading="lazy">
+                                <img src="{{ our_history.image.url|optimize_image:'w_800' }}" alt="{{ our_history.title }}" loading="lazy" decoding="async">
                             {% endif %}
                         </div>
                     </div>
@@ -124,7 +131,7 @@
                         <article class="dish-card" data-animate>
                             <div class="dish-card__image">
                                 {% if dish.image %}
-                                    <img src="{{ dish.image.url }}" alt="{{ dish.title }}" loading="lazy">
+                                    <img src="{{ dish.image.url|optimize_image:'w_600' }}" alt="{{ dish.title }}" loading="lazy" decoding="async">
                                 {% endif %}
                                 <div class="dish-card__badges">
                                     {% if dish.is_promo_active %}
@@ -185,7 +192,7 @@
                              data-full-img="{% if news.image %}{{ news.image.url }}{% endif %}"
                              {% if news.promotion_end_date %}data-promo-end="{{ news.promotion_end_date|date:'d.m.Y' }}"{% endif %}>
                         <div class="news-card__image">
-                            {% if news.image %}<img src="{{ news.image.url }}" alt="{{ news.title }}" loading="lazy">{% endif %}
+                            {% if news.image %}<img src="{{ news.image.url|optimize_image:'w_600' }}" alt="{{ news.title }}" loading="lazy" decoding="async">{% endif %}
                         </div>
                         <div class="news-card__content">
                             <h3 class="news-card__title">{{ news.title }}</h3>
@@ -247,7 +254,7 @@
                         <div class="testimonial-more">Читать полностью...</div>
                         {% endif %}
                         <div class="testimonial-user">
-                            <img src="https://ui-avatars.com/api/?name={{ testimonial.name }}&background=b85c4b&color=fff" alt="{{ testimonial.name }}" loading="lazy">
+                            <img src="https://ui-avatars.com/api/?name={{ testimonial.name }}&background=b85c4b&color=fff" alt="{{ testimonial.name }}" loading="lazy" decoding="async">
                             <div class="testimonial-user-info">
                                 <h4>{{ testimonial.name }}</h4>
                                 <span>{{ testimonial.created_at|date:"d.m.Y" }}</span>
@@ -376,9 +383,9 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js" defer></script>
+    <script src="{% static 'js/script.js' %}" defer></script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
