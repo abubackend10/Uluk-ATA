@@ -10,17 +10,8 @@ from pathlib import Path
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = os.getenv('SECRET_KEY')
-
-# =========================
-# DEBUG
-# =========================
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
-
-# =========================
-# ALLOWED HOSTS
-# =========================
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv(
@@ -69,12 +60,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# =========================
-# SECURITY SETTINGS
-# =========================
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
     SECURE_SSL_REDIRECT = True
 
     SESSION_COOKIE_SECURE = True
@@ -95,53 +82,30 @@ if not DEBUG:
         if host not in ('*', '127.0.0.1', 'localhost')
     ]
 
-# =========================
-# ROOT URLS
-# =========================
 ROOT_URLCONF = 'core.urls'
-
-# =========================
-# TEMPLATES
-# =========================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
         'DIRS': [
             BASE_DIR / 'templates',
         ],
-
         'APP_DIRS': True,
-
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
                 'app.settings.context_processors.site_settings',
             ],
         },
     },
 ]
-
-# =========================
-# WSGI
-# =========================
 WSGI_APPLICATION = 'core.wsgi.application'
-
-# =========================
-# DATABASE
-# =========================
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
     )
 }
-
-# =========================
-# PASSWORD VALIDATORS
-# =========================
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -196,40 +160,28 @@ CLOUDINARY_STORAGE = {
     'PREFIX': 'uluk_ata',
 }
 
-# =========================
-# DJANGO 6 STORAGES
-# =========================
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
-
-# =========================
-# LOGGING
-# =========================
 LOGGING = {
     'version': 1,
-
     'disable_existing_loggers': False,
-
     'formatters': {
         'verbose': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
     },
-
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
-
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
@@ -237,7 +189,6 @@ LOGGING = {
             'formatter': 'verbose',
         },
     },
-
     'loggers': {
         'django': {
             'handlers': ['console', 'file'],
@@ -246,8 +197,4 @@ LOGGING = {
         },
     },
 }
-
-# =========================
-# DEFAULT PRIMARY KEY
-# =========================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

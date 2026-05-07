@@ -6,8 +6,6 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 
-# Create your views here.
-
 def index(request):
     site_settings = Settings.objects.first()
     our_history = OurHistory.objects.prefetch_related('features').first()
@@ -40,7 +38,6 @@ def contacts(request):
             message=message
         )
         
-        # Отправка email пользователю (если указан email)
         if email:
             try:
                 send_mail(
@@ -71,11 +68,9 @@ def menu(request):
     
     today = timezone.now().date()
     
-    # Условия для "активных" статусов
     is_new_q = Q(is_new=True) & (Q(new_until_date__isnull=True) | Q(new_until_date__gte=today))
     is_promo_q = Q(is_promotion=True) & (Q(promotion_end_date__isnull=True) | Q(promotion_end_date__gte=today)) & Q(discount_price__isnull=False)
 
-    # Аннотируем приоритет: 1 - Новинка+Акция, 2 - Просто новинка, 3 - Только акция, 4 - Остальное
     dishes = Dish.objects.select_related('category').annotate(
         sort_priority=Case(
             When(is_new_q & is_promo_q, then=Value(1)),
@@ -119,7 +114,6 @@ def reservation(request):
             guests=guests, occasion=occasion, comment=comment
         )
         
-        # Отправка email ресторану о новой брони
         site_settings = Settings.objects.first()
         if site_settings and site_settings.email:
             try:

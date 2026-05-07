@@ -8,7 +8,7 @@
     {% if site_settings.favicon %}
     <link rel="icon" type="image/x-icon" href="{{ site_settings.favicon.url }}">
     {% else %}
-    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}"> {# Fallback to static favicon #}
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     {% endif %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=27.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -55,7 +55,6 @@
         {% endif %}
 
         {% block main_content %}
-        <!-- Hero Section -->
         {% if site_settings.hero_image %}
         <section class="hero" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('{{ site_settings.hero_image.url }}');">
         {% else %}
@@ -76,7 +75,6 @@
             </div>
         </section>
 
-        <!-- About Section (переработан) -->
         <section class="section section--cream">
             <div class="container">
                 {% if our_history %}
@@ -113,9 +111,7 @@
                 {% endif %}
             </div>
         </section>
-        <!-- News Section -->
 
-        <!-- Popular Dishes Section -->
         {% if popular_dishes %}
         <section class="section">
             <div class="container">
@@ -161,7 +157,6 @@
                                          data-dish-title="{{ dish.title|escapejs }}" 
                                          data-dish-price="{{ dish.get_display_price }}"
                                          data-dish-old-price="{{ dish.price }}">
-                                        <!-- Будет заполнено через JS (cart.updateUI) -->
                                     </div>
                                 </div>
                             </div>
@@ -175,8 +170,6 @@
         </section>
         {% endif %}
 
-
-        <!-- News Section -->
         {% if news_list %}
         <section class="section section--cream">
             <div class="container">
@@ -213,7 +206,6 @@
         </section>
         {% endif %}
 
-        <!-- Statistics Section (Статический блок) -->
         <section class="stats section">
             <div class="container">
                 <div class="stats-grid">
@@ -228,7 +220,6 @@
             </div>
         </section>
 
-        <!-- Testimonials Section (Статический блок) -->
         <section class="section section--cream">
             <div class="container">
                 <div class="section-header" data-animate>
@@ -316,7 +307,6 @@
         </div>
     </footer>
 
-    <!-- Cart Modal -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-modal__overlay" onclick="cart.toggle()"></div>
         <div class="cart-modal__container">
@@ -344,18 +334,15 @@
         </div>
     </div>
 
-    <!-- Floating Cart Button -->
     <button class="cart-floating-btn" id="cartToggleBtn" onclick="cart.toggle()">
         <i class="fas fa-shopping-basket"></i>
         <span class="cart-badge" id="cartBadge">0</span>
     </button>
 
-    <!-- Floating Feedback Button -->
     <a href="{% url 'reviews' %}" class="feedback-pulse" aria-label="Оставить отзыв">
         <i class="fas fa-star"></i>
     </a>
 
-    <!-- News Modal (Expanded Card) -->
     <div class="news-modal" id="newsModal">
         <div class="news-modal__overlay"></div>
         <div class="news-modal__container">
@@ -371,7 +358,6 @@
         </div>
     </div>
 
-    <!-- Testimonial Modal -->
     <div class="testimonial-modal" id="testimonialModal">
         <div class="testimonial-modal__overlay"></div>
         <div class="testimonial-modal__container">
