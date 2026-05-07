@@ -24,9 +24,6 @@ def index(request):
 
 def contacts(request):
     if request.method == "POST":
-        # Если в терминале пусто при нажатии кнопки — значит форма не отправляет POST
-        print(f"DEBUG DATA: {request.POST}") 
-        
         name = request.POST.get('name', '').strip()
         phone = request.POST.get('phone', '').strip()
         email = request.POST.get('email', '').strip()

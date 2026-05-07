@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block main_content %}
+<section class="section" style="padding-top: 200px; text-align: center; min-height: 80vh;">
+    <div class="container">
+        <h1 style="font-size: 8rem; color: var(--primary-color);">500</h1>
+        <h2 class="section-title">Ошибка сервера</h2>
+        <p class="hero__desc" style="color: var(--text-light);">Что-то пошло не так. Мы уже работаем над исправлением проблемы.</p>
+        <div style="margin-top: 40px;">
+            <a href="{% url 'index' %}" class="btn btn-primary">Вернуться на главную</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

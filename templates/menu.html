@@ -26,7 +26,9 @@
                     {% for dish in dishes %}
                         <article class="dish-card">
                             <div class="dish-card__image">
-                                <img src="{{ dish.image.url }}" alt="{{ dish.title }}">
+                                {% if dish.image %}
+                                    <img src="{{ dish.image.url }}" alt="{{ dish.title }}" loading="lazy">
+                                {% endif %}
                                 <div class="dish-card__badges">
                                     {% if dish.is_promo_active %}
                                         <span class="dish-card__badge dish-card__badge--promo">Акция</span>

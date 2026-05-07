@@ -105,7 +105,7 @@
                     <div class="about__image" data-animate>
                         <div class="about__img-wrapper">
                             {% if our_history.image %}
-                                <img src="{{ our_history.image.url }}" alt="{{ our_history.title }}">
+                                <img src="{{ our_history.image.url }}" alt="{{ our_history.title }}" loading="lazy">
                             {% endif %}
                         </div>
                     </div>
@@ -127,7 +127,9 @@
                     {% for dish in popular_dishes %}
                         <article class="dish-card" data-animate>
                             <div class="dish-card__image">
-                                <img src="{{ dish.image.url }}" alt="{{ dish.title }}">
+                                {% if dish.image %}
+                                    <img src="{{ dish.image.url }}" alt="{{ dish.title }}" loading="lazy">
+                                {% endif %}
                                 <div class="dish-card__badges">
                                     {% if dish.is_promo_active %}
                                         <span class="dish-card__badge dish-card__badge--promo">Акция</span>
@@ -187,10 +189,10 @@
                     <article class="news-card" data-animate 
                              data-full-title="{{ news.title }}" 
                              data-full-desc="{{ news.description }}" 
-                             data-full-img="{{ news.image.url }}"
+                             data-full-img="{% if news.image %}{{ news.image.url }}{% endif %}"
                              {% if news.promotion_end_date %}data-promo-end="{{ news.promotion_end_date|date:'d.m.Y' }}"{% endif %}>
                         <div class="news-card__image">
-                            {% if news.image %}<img src="{{ news.image.url }}" alt="{{ news.title }}">{% endif %}
+                            {% if news.image %}<img src="{{ news.image.url }}" alt="{{ news.title }}" loading="lazy">{% endif %}
                         </div>
                         <div class="news-card__content">
                             <h3 class="news-card__title">{{ news.title }}</h3>
@@ -254,7 +256,7 @@
                         <div class="testimonial-more">Читать полностью...</div>
                         {% endif %}
                         <div class="testimonial-user">
-                            <img src="https://ui-avatars.com/api/?name={{ testimonial.name }}&background=b85c4b&color=fff" alt="{{ testimonial.name }}">
+                            <img src="https://ui-avatars.com/api/?name={{ testimonial.name }}&background=b85c4b&color=fff" alt="{{ testimonial.name }}" loading="lazy">
                             <div class="testimonial-user-info">
                                 <h4>{{ testimonial.name }}</h4>
                                 <span>{{ testimonial.created_at|date:"d.m.Y" }}</span>
