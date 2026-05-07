@@ -1,15 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // ===== HEADER SCROLL EFFECT =====
     const header = document.querySelector('.header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) header.classList.add('scrolled');
         else header.classList.remove('scrolled');
     });
 
-    // ===== PARALLAX HERO =====
     const hero = document.querySelector('.hero');
     if (hero) {
-        // Включаем параллакс только для десктопов (где нет тача)
         if (!('ontouchstart' in window)) {
             let ticking = false;
             const updateParallax = () => {
@@ -48,14 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ===== ACTIVE NAV LINK =====
     const navLinks = document.querySelectorAll('.nav__link');
-    const currentPath = location.pathname; // Например: '/', '/menu/', '/gallery/'
+    const currentPath = location.pathname;
 
     document.querySelectorAll('.nav__link').forEach(link => {
-        let linkHref = link.getAttribute('href'); // Например: '/', '/menu/', '/gallery/'
-
-        // Удаляем конечный слеш для сравнения, если это не корневой путь '/'
+        let linkHref = link.getAttribute('href');
         const normalizedCurrentPath = (currentPath.length > 1 && currentPath.endsWith('/')) ? currentPath.slice(0, -1) : currentPath;
         const normalizedLinkHref = (linkHref.length > 1 && linkHref.endsWith('/')) ? linkHref.slice(0, -1) : linkHref;
 
@@ -64,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ===== AUTO-HIDE MESSAGES (Django Alerts) =====
     const alerts = document.querySelectorAll('.alert');
     if (alerts.length) {
         setTimeout(() => {
@@ -80,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // ===== GALLERY LIGHTBOX =====
     const galleryItems = document.querySelectorAll('.gallery-item');
     if (galleryItems.length) {
         const lightbox = document.createElement('div');
@@ -130,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         galleryItems.forEach((item, idx) => item.addEventListener('click', () => {
-            if (window.innerWidth <= 768 || ('ontouchstart' in window)) { // Открываем лайтбокс только на мобильных или тач-устройствах
+            if (window.innerWidth <= 768 || ('ontouchstart' in window)) {
                 showLightbox(idx);
             }
         }));
@@ -149,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ===== NEWS MODAL LOGIC =====
     const newsCards = document.querySelectorAll('.news-card');
     const newsModal = document.getElementById('newsModal');
     
@@ -192,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ===== TESTIMONIAL MODAL LOGIC =====
     const testimonialCards = document.querySelectorAll('.testimonial-card--expandable');
     const testimonialModal = document.getElementById('testimonialModal');
     
@@ -438,7 +428,6 @@ const cart = {
         }
         this.save();
         
-        // Маленькая анимация кнопки корзины
         const btn = document.getElementById('cartToggleBtn');
         if (btn) {
             btn.classList.add('pulse-anim');
@@ -578,5 +567,4 @@ const cart = {
     }
 };
 
-// Инициализация UI при загрузке
 document.addEventListener('DOMContentLoaded', () => cart.updateUI());
