@@ -13,10 +13,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-
+# =========================
+# DEBUG
+# =========================
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-
+# =========================
+# ALLOWED HOSTS
+# =========================
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv(
@@ -31,7 +35,9 @@ RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-
+# =========================
+# INSTALLED APPS
+# =========================
 INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
@@ -46,7 +52,9 @@ INSTALLED_APPS = [
     'app.settings.apps.SettingsConfig',
 ]
 
-
+# =========================
+# MIDDLEWARE
+# =========================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
@@ -61,7 +69,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+# =========================
+# SECURITY SETTINGS
+# =========================
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -85,10 +95,14 @@ if not DEBUG:
         if host not in ('*', '127.0.0.1', 'localhost')
     ]
 
-
+# =========================
+# ROOT URLS
+# =========================
 ROOT_URLCONF = 'core.urls'
 
-
+# =========================
+# TEMPLATES
+# =========================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -111,17 +125,23 @@ TEMPLATES = [
     },
 ]
 
-
+# =========================
+# WSGI
+# =========================
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
+# =========================
+# DATABASE
+# =========================
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
     )
 }
 
-
+# =========================
+# PASSWORD VALIDATORS
+# =========================
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -137,7 +157,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# =========================
+# LANGUAGE / TIMEZONE
+# =========================
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'Asia/Bishkek'
@@ -145,7 +167,9 @@ TIME_ZONE = 'Asia/Bishkek'
 USE_I18N = True
 USE_TZ = True
 
-
+# =========================
+# STATIC FILES
+# =========================
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -154,10 +178,17 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Для django-cloudinary-storage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# =========================
+# MEDIA
+# =========================
 MEDIA_URL = '/media/'
 
-
+# =========================
+# CLOUDINARY
+# =========================
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
     'API_KEY': os.getenv('API_KEY'),
@@ -165,7 +196,9 @@ CLOUDINARY_STORAGE = {
     'PREFIX': 'uluk_ata',
 }
 
-
+# =========================
+# DJANGO 6 STORAGES
+# =========================
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -176,7 +209,9 @@ STORAGES = {
     },
 }
 
-
+# =========================
+# LOGGING
+# =========================
 LOGGING = {
     'version': 1,
 
@@ -212,5 +247,7 @@ LOGGING = {
     },
 }
 
-
+# =========================
+# DEFAULT PRIMARY KEY
+# =========================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
