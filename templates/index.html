@@ -189,7 +189,7 @@
                     <article class="news-card" data-animate 
                              data-full-title="{{ news.title }}" 
                              data-full-desc="{{ news.description }}" 
-                             data-full-img="{{ news.image.url }}"
+                             data-full-img="{% if news.image %}{{ news.image.url }}{% endif %}"
                              {% if news.promotion_end_date %}data-promo-end="{{ news.promotion_end_date|date:'d.m.Y' }}"{% endif %}>
                         <div class="news-card__image">
                             {% if news.image %}<img src="{{ news.image.url }}" alt="{{ news.title }}" loading="lazy">{% endif %}
@@ -393,14 +393,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
-    <script>
-        function orderViaWhatsApp(dishTitle, price, whatsappNumber) {
-            const message = `Здравствуйте! Хочу заказать блюдо: ${dishTitle} - ${price} сом`;
-            const encodedMessage = encodeURIComponent(message);
-            const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-            window.open(url, '_blank');
-        }
-    </script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
